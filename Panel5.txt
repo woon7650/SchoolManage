@@ -1,0 +1,138 @@
+class MyPanel5 extends JPanel{
+	      public MyPanel5() {
+	         
+	           setLayout(null);
+	           ArrayList<String> list1 = new ArrayList<String>(5);
+	           
+	           Vector<String> v = new Vector<String>();
+	           JList<String> list = new JList<String>(v);
+	           
+	           Vector<String> v1 = new Vector<String>();
+
+	           JLabel text1 = new JLabel("성적보기");
+	           JLabel text2 = new JLabel("이름 :");
+	           JLabel text4 = new JLabel("국어:");
+	           JLabel text6= new JLabel("영어:");
+	           JLabel text8 = new JLabel("수학:");
+	           JLabel text10 = new JLabel("사회:");
+	           JLabel text12 = new JLabel("비고");
+	           JLabel text13 = new JLabel("학생목록");
+	           JTextArea ta1 = new JTextArea(20,30);
+	           JButton btn1 = new JButton("목록보기");
+	           JLabel text3 = new JLabel();
+	           JLabel text5 = new JLabel();           
+	           JLabel text7 = new JLabel();           
+	           JLabel text9 = new JLabel();           
+	           JLabel text11 = new JLabel();
+	           
+	           btn1.addActionListener(new ActionListener() {
+	               public void actionPerformed(ActionEvent e1) {
+	                  try {
+	                        String txt;
+	                        String[] array;
+	                        BufferedReader file = new BufferedReader(new FileReader("D:/학생정보.txt"));
+	                        while((txt = file.readLine()) != null) {
+	                           array = txt.split("/");
+	                           v.add(array[0]);
+	                           list.setListData(v);
+	                        }
+	                       
+	                     }catch(IOException E) {
+	                        E.printStackTrace();
+	                     }
+	               }
+	           });
+	           
+	           
+	           list.addMouseListener(new MouseListener() {
+	         @Override
+	         public void mouseClicked(MouseEvent arg0) {
+	            try {
+	                    String txt;
+	                    String[] array1;
+	                    BufferedReader file = new BufferedReader(new FileReader("D:/학생정보.txt"));
+	                    while((txt = file.readLine()) != null) {
+	                       array1 = txt.split("/");
+	                       list1.add(array1[0]);
+	                       list1.add(array1[3]);
+	                       list1.add(array1[4]);
+	                       list1.add(array1[5]);
+	                       list1.add(array1[6]);
+	                       text3.setText(list1.get(0));
+	                       text5.setText(list1.get(1));
+	                       text7.setText(list1.get(2));
+	                       text9.setText(list1.get(3));
+	                       text11.setText(list1.get(4));
+	                       
+	                    }
+	                   
+	                 }catch(IOException E) {
+	                    E.printStackTrace();
+	                 }
+	            
+	         }
+	         @Override
+	         public void mouseEntered(MouseEvent arg0) {
+	            // TODO Auto-generated method stub
+	            
+	         }
+	         @Override
+	         public void mouseExited(MouseEvent arg0) {
+	            // TODO Auto-generated method stub
+	            
+	         }
+	         @Override
+	         public void mousePressed(MouseEvent arg0) {
+	            // TODO Auto-generated method stub
+	            
+	         }
+	         @Override
+	         public void mouseReleased(MouseEvent arg0) {
+	            // TODO Auto-generated method stub
+	            
+	         }
+
+	         
+	           });
+
+	           
+	            
+	           text1.setBounds(350, 20, 80, 20);
+	           text2.setBounds(310, 100, 60, 20);
+	           text3.setBounds(350, 100, 60, 20);
+	           text4.setBounds(250, 160, 60, 20);
+	           text5.setBounds(290, 160, 60, 20);
+	           text6.setBounds(370, 160, 60, 20);
+	           text7.setBounds(410, 160, 60, 20);
+	           text8.setBounds(250, 230, 60, 20);
+	           text9.setBounds(290, 230, 60, 20);
+	           text10.setBounds(370, 230, 60, 20);
+	           text11.setBounds(410, 230, 60, 20);
+	           text12.setBounds(30, 400, 60, 20);
+	           text13.setBounds(650, 20, 60, 20);           
+	           btn1.setBounds(320, 320, 100, 30);
+	           ta1.setBounds(30, 420, 400, 80); 
+	           list.setBounds(600, 40, 150, 400);
+	            
+	           add(text1);
+	           add(text2);
+	           add(text3);
+	           add(text4);
+	           add(text5);
+	           add(text6);
+	           add(text7);
+	           add(text8);
+	           add(text9);
+	           add(text10);
+	           add(text11);
+	           add(text12);
+	           add(text13);
+	           add(ta1);
+	           add(btn1);
+	           add(list);
+	           
+	           
+
+	      }
+	      
+	   }
