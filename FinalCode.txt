@@ -1,0 +1,676 @@
+package Project1;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+public class Project extends JFrame{
+   JTabbedPane pane;
+   
+   public Project() {
+      setTitle("학사관리");
+      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      Container c1 = getContentPane();
+      pane = createTabbedPane();
+      c1.add(pane, BorderLayout.CENTER);
+      setSize(800,600);
+      setVisible(true);
+   }
+   
+   public JTabbedPane createTabbedPane() {
+      JTabbedPane pane = new JTabbedPane();
+      pane.addTab("메인",new MyPanel());
+      pane.addTab("회원등록", new MyPanel2());
+
+      
+      
+      return pane;
+   }
+   
+
+
+   class MyPanel extends JPanel{
+      public MyPanel() {
+            
+        setLayout(null);
+        
+         ImageIcon img = new ImageIcon("D:/학사.png");
+         JLabel imageLabel = new JLabel(img);
+            
+         JLabel textLabel1 = new JLabel("아이디");
+         JTextField text1 = new JTextField(10);
+         JLabel textLabel2 = new JLabel("패스워드");
+         JPasswordField text2 = new JPasswordField(10);
+         JButton btn1 = new JButton("Login");
+         JButton btn2 = new JButton("회원가입");
+         JLabel Hello = new JLabel("환영합니다");
+         
+         imageLabel.setBounds(150,50,500,300);
+         textLabel1.setBounds(170,310,200,200);
+         text1.setBounds(220,400,150,20);
+         textLabel2.setBounds(415,310,200,200);
+         text2.setBounds(475,400,150,20);
+         btn1.setBounds(280,450,100,30);
+         btn2.setBounds(415,450,100,30);
+         Hello.setBounds(365,370, 100,30);
+
+         add(imageLabel);
+         add(textLabel1);
+         add(text1);
+         add(textLabel2);
+         add(text2);
+         add(btn1);
+         add(btn2);
+         add(Hello);
+         Hello.setVisible(false);
+         
+         
+         class MyActionListener implements ActionListener{
+            public void actionPerformed(ActionEvent e) {
+               String pw = new String(text2.getPassword());
+               JButton b = (JButton)e.getSource();
+               
+               if(b.getText().equals("Login")) {
+                  if(text1.getText().equals("admin") && pw.equals("1234")) {
+                     //관리자(선생님)으로 로그인 한 경우
+                      JOptionPane.showMessageDialog(null, "로그인 성공");
+                      textLabel1.setVisible(false);
+                      text1.setVisible(false);
+                      textLabel2.setVisible(false);
+                      text2.setVisible(false);
+                      btn1.setText("Logout");
+                      btn2.setEnabled(false);
+                      Hello.setVisible(true);
+                      //pane에 성적입력탭과 학생성적보기 탭 만들어서 넣어야 함!
+                      //pane.addTab("학생정보", new MyPanel3()); 이건 빼구
+                      pane.setEnabledAt(1, false);
+                      pane.addTab("성적입력",new MyPanel4());
+                      pane.addTab("학생성적보기",new MyPanel5());
+                      pane.setSelectedIndex(2);
+                      
+                   }
+                  else {
+                     try {
+                          String txt;
+                          String[] array;
+                          int check = 0;
+                          BufferedReader file = new BufferedReader(new FileReader("D:/회원명단.txt"));
+                          while((txt = file.readLine()) != null) {
+                             array = txt.split("/");
+                             if(text1.getText().equals(array[1]) && pw.equals(array[2])) {
+                             //회원명단에 있는 경우
+                                JOptionPane.showMessageDialog(null, "로그인 성공");
+                                textLabel1.setVisible(false);
+                                  text1.setVisible(false);
+                                  textLabel2.setVisible(false);
+                                  text2.setVisible(false);
+                                  btn1.setText("Logout");
+                                  btn2.setEnabled(false);
+                                  Hello.setVisible(true);
+                                  pane.addTab("학생정보", new MyPanel3());
+                                  pane.setEnabledAt(1, false);
+                                  check = 1;
+                                  break;
+                             }
+                          }
+                          if(check == 0)   
+                              JOptionPane.showMessageDialog(null, "다시 입력하세요");
+                          file.close();
+                       }catch(IOException E) {
+                          E.printStackTrace();
+                       }         
+                  }
+               }else if(b.getText().equals("Logout")){
+                  JOptionPane.showMessageDialog(null, "로그아웃합니다");  
+                  System.exit(0);
+                  
+               }else {//회원가입
+                  pane.setSelectedIndex(1);     
+                  
+               }
+          
+            }             
+             
+          }
+         btn1.addActionListener(new MyActionListener());
+         btn2.addActionListener(new MyActionListener());
+         }
+
+        
+      }
+   class MyPanel2 extends JPanel{
+      public MyPanel2() {
+         setLayout(null);
+         
+         String[] Year = {"1990년", "1991년", "1992년", "1993년", "1994년", "1995년", "1996년", "1997년", "1998년", "1999년", "2000년", "2001년", "2002년" };
+         String[] Month = {"1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"};
+         String[] Date = {"1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일", "11일", "12일", "13일", "14일", "15일", "16일", "17일", "18일", "19일", "20일", "21일", "22일", "23일", "24일", "25일", "26일", "27일", "28일", "29일", "30일", "31일"};
+         String[] Grade = {"1학년", "2학년", "3학년", "4학년"};
+         String[] Class = {"1반", "2반", "3반", "4반", "5반", "6반", "7반", "8반", "9반", "10반"};
+         
+         JLabel Label1 = new JLabel("이름");
+         JTextField name = new JTextField(10);
+         JLabel Label2 = new JLabel("아이디");
+         JTextField id = new JTextField(10);
+         JLabel Label3 = new JLabel("비밀번호");
+         JPasswordField pw = new JPasswordField(10);
+         JLabel Label4 = new JLabel("생년월일입력");
+        
+         JComboBox<String> YearList = new JComboBox<String>(Year);
+         YearList.setBounds(350, 120, 80, 20);
+         add(YearList);
+         JComboBox<String> MonthList = new JComboBox<String>(Month);
+         MonthList.setBounds(435, 120, 50, 20);
+         add(MonthList);
+         JComboBox<String> DateList = new JComboBox<String>(Date);
+         DateList.setBounds(490, 120, 50, 20);
+         add(DateList);
+
+         
+         JLabel Label5 = new JLabel("학년");
+         JLabel Label6 = new JLabel("반");
+         
+         JComboBox<String> GradeList = new JComboBox<String>(Grade);
+         GradeList.setBounds(380, 150, 60, 20);
+         add(GradeList);
+         JComboBox<String> ClassList = new JComboBox<String>(Class);
+         ClassList.setBounds(470, 150, 60, 20);
+         add(ClassList);
+         
+         JRadioButton Student = new JRadioButton("학생");
+         JRadioButton Teacher = new JRadioButton("교사");
+         
+         JLabel Label7 = new JLabel("취미");
+         JTextField Hobby = new JTextField(10);
+         JLabel Label8 = new JLabel("특기");
+         JTextField Speciality = new JTextField(10);
+         
+         JLabel Label9 = new JLabel("집전화");
+         JTextField HN = new JTextField(20);
+         JLabel Label10 = new JLabel("휴대폰");
+         JTextField PN = new JTextField(20);
+         
+         JButton Finish = new JButton("가입완료");
+         
+         Finish.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               try {
+                  BufferedWriter file = new BufferedWriter(new FileWriter("D:/회원명단.txt",true));
+                  file.write(name.getText()+"/");
+                  file.write(id.getText()+"/");
+                  String PW = new String(pw.getPassword());
+                  file.write(PW+"/");
+                  file.write(YearList.getSelectedItem().toString());
+                  file.write(MonthList.getSelectedItem().toString());
+                  file.write(DateList.getSelectedItem().toString()+"/");
+                  file.write(GradeList.getSelectedItem().toString()+"/");
+                  file.write(ClassList.getSelectedItem().toString()+"/");               
+                  if(Student.isSelected()) {
+                     file.write(Student.getText()+"/");
+                  }else {
+                     file.write(Teacher.getText()+"/");
+                  }
+                     
+                  file.write(Hobby.getText()+"/");
+                  file.write(Speciality.getText()+"/");
+                  file.write(HN.getText()+"/");
+                  file.write(PN.getText()+"\r\n");
+                  file.close();
+
+                  JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
+                  pane.setSelectedIndex(0);
+                  
+               }catch(Exception ex) {
+                  JOptionPane.showMessageDialog(null, "회원가입이 실패하였습니다.");
+               }
+            }
+         });
+
+         JButton Cancel = new JButton("취소");
+         
+         Label1.setBounds(310, 10, 50, 30);
+         name.setBounds(350, 15, 200, 20);
+         Label2.setBounds(300, 40, 80, 30);
+         id.setBounds(350, 45, 200, 20);
+         Label3.setBounds(290, 70, 130, 30);
+         pw.setBounds(350, 75, 200, 20);
+         Label4.setBounds(260, 115, 130, 30);
+         Label5.setBounds(340, 150, 80, 20);
+         Label6.setBounds(450, 150, 80, 20);
+         Student.setBounds(370, 180, 80, 30);
+         Teacher.setBounds(460, 180, 80, 30);
+         Label7.setBounds(310, 220, 80, 30);
+         Hobby.setBounds(350, 227, 170, 20);
+         Label8.setBounds(310, 255, 80, 30);
+         Speciality.setBounds(350, 262, 170, 20);
+         Label9.setBounds(250, 320, 80, 20);
+         HN.setBounds(300, 320, 300, 20);
+         Label10.setBounds(250, 370, 80, 20);
+         PN.setBounds(300, 370, 300, 20);
+         Finish.setBounds(300, 430, 100, 20);
+         Cancel.setBounds(450, 430, 80, 20);
+         
+         
+         add(Label1);
+         add(name);
+         add(Label2);
+         add(id);
+         add(Label3);
+         add(pw);
+         add(Label4);
+         add(Label5);
+         add(Label6);
+         add(Student);
+         add(Teacher);
+         add(Label7);
+         add(Hobby);
+         add(Label8);
+         add(Speciality);
+         add(Label9);
+         add(HN);
+         add(Label10);
+         add(PN);
+         add(Finish);
+         add(Cancel);
+
+      }
+   }
+   class MyPanel3 extends JPanel{
+      public MyPanel3() {
+         setLayout(null);
+         Vector<String> v = new Vector<String>();
+         Vector<String> v1 = new Vector<String>();
+         Vector<String> v2 = new Vector<String>();
+         Vector<String> v3 = new Vector<String>();
+         Vector<String> v4 = new Vector<String>();
+         Vector<String> v5 = new Vector<String>();
+         Vector<String> v6 = new Vector<String>();
+         Vector<String> v7 = new Vector<String>();
+         Vector<String> v8 = new Vector<String>();
+         JList<String> list = new JList<String>(v);
+         JList<String> list1 = new JList<String>(v1);
+         JList<String> list2 = new JList<String>(v2);
+         JList<String> list3 = new JList<String>(v3);
+         JList<String> list4 = new JList<String>(v4);
+         JList<String> list5 = new JList<String>(v5);
+         JList<String> list6 = new JList<String>(v6);
+         JList<String> list7 = new JList<String>(v7);
+         JList<String> list8 = new JList<String>(v8);
+         
+         
+         JLabel text1 = new JLabel("이름");
+         JLabel text3 = new JLabel("학년");
+         JLabel text5 = new JLabel("반");
+         JLabel text7 = new JLabel("생년월일");
+         JLabel text9 = new JLabel("취미");
+         JLabel text11 = new JLabel("특기");
+         JLabel text13 = new JLabel("집전화");
+         JLabel text15 = new JLabel("핸드폰");
+         JLabel text17 = new JLabel("학생 정보");
+         
+         try {
+             String txt;
+             String[] array;
+             BufferedReader file = new BufferedReader(new FileReader("D:/회원명단.txt"));
+             while((txt = file.readLine()) != null) {
+                array = txt.split("/");
+                v.add(array[0]); 
+               list1.setListData(v);
+               v1.add(array[7]); 
+               list2.setListData(v1);
+               v2.add(array[8]); 
+               list3.setListData(v2);
+               v3.add(array[9]); 
+               list4.setListData(v3);
+               v4.add(array[10]); 
+               list5.setListData(v4);
+               v5.add(array[3]); 
+               list6.setListData(v5);
+               v6.add(array[4]); 
+               list7.setListData(v6);
+               v7.add(array[5]); 
+               list8.setListData(v7);
+             }
+            
+          }catch(IOException E) {
+             E.printStackTrace();
+          }
+         
+         text17.setBounds(400, 5, 60, 30);
+         text1.setBounds(100, 30, 30, 30);
+         list1.setBounds(130, 37, 160, 20);
+         text3.setBounds(300, 30, 30, 30);
+         list7.setBounds(330, 37, 70, 20);
+         text5.setBounds(410, 30, 30, 30);
+         list8.setBounds(430, 37, 70, 20);
+         text7.setBounds(100, 145, 70, 20);
+         list6.setBounds(155, 145,160, 20);
+         text9.setBounds(105, 230, 40, 20);
+         list2.setBounds(135, 230, 130, 20);
+         text11.setBounds(280, 230, 40, 20);
+         list3.setBounds(310, 230, 130, 20);
+         text13.setBounds(105, 320, 60, 20);
+         list4.setBounds(150, 320, 210, 20);
+         text15.setBounds(105, 410, 60, 20);
+         list5.setBounds(150, 410, 210, 20);
+         list.setBounds(550, 30, 200, 200);
+         
+         add(text1);
+         add(list1);
+         add(text3);
+         add(list6);
+         add(text5);
+         add(list7);
+         add(text7);
+         add(list8);
+         add(text9);
+         add(list2);
+         add(text11);
+         add(list3);
+         add(text13);
+         add(list4);
+         add(text15);
+         add(list5);
+         add(text17);
+         add(list);
+      }
+   }
+   class MyPanel4 extends JPanel{
+      public MyPanel4() {
+         setLayout(null);
+         Vector<String> v = new Vector<String>();
+         JList<String> list = new JList<String>(v);
+         
+         
+         
+         JLabel text1 = new JLabel("성적입력");
+         JLabel text2 = new JLabel("이름 :");
+         JTextField text3 = new JTextField(14);
+         JLabel text4 = new JLabel("학년:");
+         JTextField text5 = new JTextField(10);
+         JLabel text6 = new JLabel("반:");
+         JTextField text7 = new JTextField(10);
+         JLabel text8 = new JLabel("국어:");
+         JTextField text9 = new JTextField(10);
+         JLabel text10 = new JLabel("영어:");
+         JTextField text11 = new JTextField(10);
+         JLabel text12 = new JLabel("수학:");
+         JTextField text13 = new JTextField(10);
+         JLabel text14 = new JLabel("사회:");
+         JTextField text15 = new JTextField(10);
+         JLabel text16 = new JLabel("비고");
+         JLabel text17 = new JLabel("학생목록");
+         //JTextArea ta = new JTextArea(10,20);
+        
+         
+         JButton btn1 = new JButton("확인");
+         JButton btn2 = new JButton("목록보기");
+         JButton btn3 = new JButton("삭제");
+         
+         btn1.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+               try {
+                         BufferedWriter files = new BufferedWriter(new FileWriter("D:/학생정보.txt",true));
+                         files.write(text3.getText()+"/");
+                         files.write(text5.getText()+"/");
+                         files.write(text7.getText()+"/");
+                         files.write(text9.getText()+"/");
+                         files.write(text11.getText()+"/");
+                         files.write(text13.getText()+"/");
+                         files.write(text15.getText()+"\r\n");
+                         files.close();
+                         JOptionPane.showMessageDialog(null,"입력되었습니다.");
+
+                  }catch(Exception ex) {
+                        JOptionPane.showMessageDialog(null, "다시입력하세요.");
+                  }
+               
+            }
+         });
+
+         btn2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e1) {
+               try {
+                     String txt;
+                     String[] array;
+                     BufferedReader file = new BufferedReader(new FileReader("D:/학생정보.txt"));
+                     while((txt = file.readLine()) != null) {
+                        array = txt.split("/");
+                        v.add(array[0]);  
+                        list.setListData(v);
+                     }
+                    
+                  }catch(IOException E) {
+                     E.printStackTrace();
+                  }
+            }
+         });
+         
+         btn3.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e2) {
+               
+            }
+         });
+         
+         
+         text1.setBounds(350, 20, 80, 20);
+         text2.setBounds(310, 100, 60, 20);
+         text3.setBounds(350, 100, 60, 20);
+         text4.setBounds(250, 170, 60, 20);
+         text5.setBounds(290, 170, 60, 20);
+         text6.setBounds(380, 170, 60, 20);
+         text7.setBounds(410, 170, 60, 20);
+         text8.setBounds(250, 240, 60, 20);
+         text9.setBounds(290, 240, 60, 20);
+         text10.setBounds(370, 240, 60, 20);
+         text11.setBounds(410, 240, 60, 20);
+         text12.setBounds(250, 310, 60, 20);
+         text13.setBounds(290, 310, 60, 20);
+         text14.setBounds(370, 310, 60, 20);
+         text15.setBounds(410, 310, 60, 20);
+         btn1.setBounds(240, 380, 60, 30);
+         btn2.setBounds(320, 380, 100, 30);
+         btn3.setBounds(440, 380, 60, 30);
+         text16.setBounds(430, 420, 60, 30);
+         text17.setBounds(650, 20, 60, 20);
+         list.setBounds(600, 40, 150, 400);
+         
+         
+         add(text1);
+         add(text2);
+         add(text3);
+         add(text4);
+         add(text5);
+         add(text6);
+         add(text7);
+         add(text8);
+         add(text9);
+         add(text10);
+         add(text11);
+         add(text12);
+         add(text13);
+         add(text14);
+         add(text15);
+         add(text16);
+         add(text17);
+         add(list);
+         add(btn1);
+         add(btn2);
+         add(btn3);
+
+         
+         
+         
+         
+         
+         
+      }
+   }
+   class MyPanel5 extends JPanel{
+	      public MyPanel5() {
+	         
+	           setLayout(null);
+	           ArrayList<String> list1 = new ArrayList<String>(5);
+	           
+	           Vector<String> v = new Vector<String>();
+	           JList<String> list = new JList<String>(v);
+	           
+	           Vector<String> v1 = new Vector<String>();
+
+	           JLabel text1 = new JLabel("성적보기");
+	           JLabel text2 = new JLabel("이름 :");
+	           JLabel text4 = new JLabel("국어:");
+	           JLabel text6= new JLabel("영어:");
+	           JLabel text8 = new JLabel("수학:");
+	           JLabel text10 = new JLabel("사회:");
+	           JLabel text12 = new JLabel("비고");
+	           JLabel text13 = new JLabel("학생목록");
+	           JTextArea ta1 = new JTextArea(20,30);
+	           JButton btn1 = new JButton("목록보기");
+	           JLabel text3 = new JLabel();
+	           JLabel text5 = new JLabel();           
+	           JLabel text7 = new JLabel();           
+	           JLabel text9 = new JLabel();           
+	           JLabel text11 = new JLabel();
+	           
+	           btn1.addActionListener(new ActionListener() {
+	               public void actionPerformed(ActionEvent e1) {
+	                  try {
+	                        String txt;
+	                        String[] array;
+	                        BufferedReader file = new BufferedReader(new FileReader("D:/학생정보.txt"));
+	                        while((txt = file.readLine()) != null) {
+	                           array = txt.split("/");
+	                           v.add(array[0]);
+	                           list.setListData(v);
+	                        }
+	                       
+	                     }catch(IOException E) {
+	                        E.printStackTrace();
+	                     }
+	               }
+	           });
+	           
+	           
+	           list.addMouseListener(new MouseListener() {
+	         @Override
+	         public void mouseClicked(MouseEvent arg0) {
+	            try {
+	                    String txt;
+	                    String[] array1;
+	                    BufferedReader file = new BufferedReader(new FileReader("D:/학생정보.txt"));
+	                    while((txt = file.readLine()) != null) {
+	                       array1 = txt.split("/");
+	                       list1.add(array1[0]);
+	                       list1.add(array1[3]);
+	                       list1.add(array1[4]);
+	                       list1.add(array1[5]);
+	                       list1.add(array1[6]);
+	                       text3.setText(list1.get(0));
+	                       text5.setText(list1.get(1));
+	                       text7.setText(list1.get(2));
+	                       text9.setText(list1.get(3));
+	                       text11.setText(list1.get(4));
+	                       
+	                    }
+	                   
+	                 }catch(IOException E) {
+	                    E.printStackTrace();
+	                 }
+	            
+	         }
+	         @Override
+	         public void mouseEntered(MouseEvent arg0) {
+	            // TODO Auto-generated method stub
+	            
+	         }
+	         @Override
+	         public void mouseExited(MouseEvent arg0) {
+	            // TODO Auto-generated method stub
+	            
+	         }
+	         @Override
+	         public void mousePressed(MouseEvent arg0) {
+	            // TODO Auto-generated method stub
+	            
+	         }
+	         @Override
+	         public void mouseReleased(MouseEvent arg0) {
+	            // TODO Auto-generated method stub
+	            
+	         }
+
+	         
+	           });
+
+	           
+	            
+	           text1.setBounds(350, 20, 80, 20);
+	           text2.setBounds(310, 100, 60, 20);
+	           text3.setBounds(350, 100, 60, 20);
+	           text4.setBounds(250, 160, 60, 20);
+	           text5.setBounds(290, 160, 60, 20);
+	           text6.setBounds(370, 160, 60, 20);
+	           text7.setBounds(410, 160, 60, 20);
+	           text8.setBounds(250, 230, 60, 20);
+	           text9.setBounds(290, 230, 60, 20);
+	           text10.setBounds(370, 230, 60, 20);
+	           text11.setBounds(410, 230, 60, 20);
+	           text12.setBounds(30, 400, 60, 20);
+	           text13.setBounds(650, 20, 60, 20);           
+	           btn1.setBounds(320, 320, 100, 30);
+	           ta1.setBounds(30, 420, 400, 80); 
+	           list.setBounds(600, 40, 150, 400);
+	            
+	           add(text1);
+	           add(text2);
+	           add(text3);
+	           add(text4);
+	           add(text5);
+	           add(text6);
+	           add(text7);
+	           add(text8);
+	           add(text9);
+	           add(text10);
+	           add(text11);
+	           add(text12);
+	           add(text13);
+	           add(ta1);
+	           add(btn1);
+	           add(list);
+	           
+	           
+
+	      }
+	      
+	   }
+
+   public static void main(String[] args) {
+      new Project();
+
+   }
+
+}
