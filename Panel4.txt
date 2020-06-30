@@ -1,0 +1,131 @@
+class MyPanel4 extends JPanel{
+      public MyPanel4() {
+         setLayout(null);
+         Vector<String> v = new Vector<String>();
+         JList<String> list = new JList<String>(v);
+         
+         
+         
+         JLabel text1 = new JLabel("성적입력");
+         JLabel text2 = new JLabel("이름 :");
+         JTextField text3 = new JTextField(14);
+         JLabel text4 = new JLabel("학년:");
+         JTextField text5 = new JTextField(10);
+         JLabel text6 = new JLabel("반:");
+         JTextField text7 = new JTextField(10);
+         JLabel text8 = new JLabel("국어:");
+         JTextField text9 = new JTextField(10);
+         JLabel text10 = new JLabel("영어:");
+         JTextField text11 = new JTextField(10);
+         JLabel text12 = new JLabel("수학:");
+         JTextField text13 = new JTextField(10);
+         JLabel text14 = new JLabel("사회:");
+         JTextField text15 = new JTextField(10);
+         JLabel text16 = new JLabel("비고");
+         JLabel text17 = new JLabel("학생목록");
+         //JTextArea ta = new JTextArea(10,20);
+        
+         
+         JButton btn1 = new JButton("확인");
+         JButton btn2 = new JButton("목록보기");
+         JButton btn3 = new JButton("삭제");
+         
+         btn1.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+               try {
+                         BufferedWriter files = new BufferedWriter(new FileWriter("D:/학생정보.txt",true));
+                         files.write(text3.getText()+"/");
+                         files.write(text5.getText()+"/");
+                         files.write(text7.getText()+"/");
+                         files.write(text9.getText()+"/");
+                         files.write(text11.getText()+"/");
+                         files.write(text13.getText()+"/");
+                         files.write(text15.getText()+"\r\n");
+                         files.close();
+                         JOptionPane.showMessageDialog(null,"입력되었습니다.");
+
+                  }catch(Exception ex) {
+                        JOptionPane.showMessageDialog(null, "다시입력하세요.");
+                  }
+               
+            }
+         });
+
+         btn2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e1) {
+               try {
+                     String txt;
+                     String[] array;
+                     BufferedReader file = new BufferedReader(new FileReader("D:/학생정보.txt"));
+                     while((txt = file.readLine()) != null) {
+                        array = txt.split("/");
+                        v.add(array[0]);  
+                        list.setListData(v);
+                     }
+                    
+                  }catch(IOException E) {
+                     E.printStackTrace();
+                  }
+            }
+         });
+         
+         btn3.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e2) {
+               
+            }
+         });
+         
+         
+         text1.setBounds(350, 20, 80, 20);
+         text2.setBounds(310, 100, 60, 20);
+         text3.setBounds(350, 100, 60, 20);
+         text4.setBounds(250, 170, 60, 20);
+         text5.setBounds(290, 170, 60, 20);
+         text6.setBounds(380, 170, 60, 20);
+         text7.setBounds(410, 170, 60, 20);
+         text8.setBounds(250, 240, 60, 20);
+         text9.setBounds(290, 240, 60, 20);
+         text10.setBounds(370, 240, 60, 20);
+         text11.setBounds(410, 240, 60, 20);
+         text12.setBounds(250, 310, 60, 20);
+         text13.setBounds(290, 310, 60, 20);
+         text14.setBounds(370, 310, 60, 20);
+         text15.setBounds(410, 310, 60, 20);
+         btn1.setBounds(240, 380, 60, 30);
+         btn2.setBounds(320, 380, 100, 30);
+         btn3.setBounds(440, 380, 60, 30);
+         text16.setBounds(430, 420, 60, 30);
+         text17.setBounds(650, 20, 60, 20);
+         list.setBounds(600, 40, 150, 400);
+         
+         
+         add(text1);
+         add(text2);
+         add(text3);
+         add(text4);
+         add(text5);
+         add(text6);
+         add(text7);
+         add(text8);
+         add(text9);
+         add(text10);
+         add(text11);
+         add(text12);
+         add(text13);
+         add(text14);
+         add(text15);
+         add(text16);
+         add(text17);
+         add(list);
+         add(btn1);
+         add(btn2);
+         add(btn3);
+
+         
+         
+         
+         
+         
+         
+      }
+   }
