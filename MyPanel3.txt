@@ -1,0 +1,135 @@
+
+package Project1;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+   class MyPanel3 extends JPanel{
+      public MyPanel3() {
+         setLayout(null);
+         Vector<String> v = new Vector<String>();
+         Vector<String> v1 = new Vector<String>();
+         Vector<String> v2 = new Vector<String>();
+         Vector<String> v3 = new Vector<String>();
+         Vector<String> v4 = new Vector<String>();
+         Vector<String> v5 = new Vector<String>();
+         Vector<String> v6 = new Vector<String>();
+         Vector<String> v7 = new Vector<String>();
+         Vector<String> v8 = new Vector<String>();
+         JList<String> list = new JList<String>(v);
+         JList<String> list1 = new JList<String>(v1);
+         JList<String> list2 = new JList<String>(v2);
+         JList<String> list3 = new JList<String>(v3);
+         JList<String> list4 = new JList<String>(v4);
+         JList<String> list5 = new JList<String>(v5);
+         JList<String> list6 = new JList<String>(v6);
+         JList<String> list7 = new JList<String>(v7);
+         JList<String> list8 = new JList<String>(v8);
+         
+         
+         JLabel text1 = new JLabel("이름");
+         JLabel text3 = new JLabel("학년");
+         JLabel text5 = new JLabel("반");
+         JLabel text7 = new JLabel("생년월일");
+         JLabel text9 = new JLabel("취미");
+         JLabel text11 = new JLabel("특기");
+         JLabel text13 = new JLabel("집전화");
+         JLabel text15 = new JLabel("핸드폰");
+         JLabel text17 = new JLabel("학생 정보");
+         
+         try {
+             String txt;
+             String[] array;
+             BufferedReader file = new BufferedReader(new FileReader("D:/회원명단.txt"));
+             while((txt = file.readLine()) != null) {
+                array = txt.split("/");
+                v.add(array[0]); 
+               list1.setListData(v);
+               v1.add(array[7]); 
+               list2.setListData(v1);
+               v2.add(array[8]); 
+               list3.setListData(v2);
+               v3.add(array[9]); 
+               list4.setListData(v3);
+               v4.add(array[10]); 
+               list5.setListData(v4);
+               v5.add(array[3]); 
+               list6.setListData(v5);
+               v6.add(array[4]); 
+               list7.setListData(v6);
+               v7.add(array[5]); 
+               list8.setListData(v7);
+             }
+            
+          }catch(IOException E) {
+             E.printStackTrace();
+          }
+         
+         text17.setBounds(400, 5, 60, 30);
+         text1.setBounds(100, 30, 30, 30);
+         list1.setBounds(130, 37, 160, 20);
+         text3.setBounds(300, 30, 30, 30);
+         list7.setBounds(330, 37, 70, 20);
+         text5.setBounds(410, 30, 30, 30);
+         list8.setBounds(430, 37, 70, 20);
+         text7.setBounds(100, 145, 70, 20);
+         list6.setBounds(155, 145,160, 20);
+         text9.setBounds(105, 230, 40, 20);
+         list2.setBounds(135, 230, 130, 20);
+         text11.setBounds(280, 230, 40, 20);
+         list3.setBounds(310, 230, 130, 20);
+         text13.setBounds(105, 320, 60, 20);
+         list4.setBounds(150, 320, 210, 20);
+         text15.setBounds(105, 410, 60, 20);
+         list5.setBounds(150, 410, 210, 20);
+         list.setBounds(550, 30, 200, 200);
+         
+         add(text1);
+         add(list1);
+         add(text3);
+         add(list6);
+         add(text5);
+         add(list7);
+         add(text7);
+         add(list8);
+         add(text9);
+         add(list2);
+         add(text11);
+         add(list3);
+         add(text13);
+         add(list4);
+         add(text15);
+         add(list5);
+         add(text17);
+         add(list);
+      }
+   public static void main(String[] args) {
+      new Project();
+
+   }
+
+   }

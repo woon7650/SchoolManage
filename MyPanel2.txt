@@ -1,0 +1,172 @@
+package Project1;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+class MyPanel2 extends JPanel{
+      public MyPanel2() {
+         setLayout(null);
+         
+         String[] Year = {"1990년", "1991년", "1992년", "1993년", "1994년", "1995년", "1996년", "1997년", "1998년", "1999년", "2000년", "2001년", "2002년" };
+         String[] Month = {"1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"};
+         String[] Date = {"1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일", "11일", "12일", "13일", "14일", "15일", "16일", "17일", "18일", "19일", "20일", "21일", "22일", "23일", "24일", "25일", "26일", "27일", "28일", "29일", "30일", "31일"};
+         String[] Grade = {"1학년", "2학년", "3학년", "4학년"};
+         String[] Class = {"1반", "2반", "3반", "4반", "5반", "6반", "7반", "8반", "9반", "10반"};
+         
+         JLabel Label1 = new JLabel("이름");
+         JTextField name = new JTextField(10);
+         JLabel Label2 = new JLabel("아이디");
+         JTextField id = new JTextField(10);
+         JLabel Label3 = new JLabel("비밀번호");
+         JPasswordField pw = new JPasswordField(10);
+         JLabel Label4 = new JLabel("생년월일입력");
+        
+         JComboBox<String> YearList = new JComboBox<String>(Year);
+         YearList.setBounds(350, 120, 80, 20);
+         add(YearList);
+         JComboBox<String> MonthList = new JComboBox<String>(Month);
+         MonthList.setBounds(435, 120, 50, 20);
+         add(MonthList);
+         JComboBox<String> DateList = new JComboBox<String>(Date);
+         DateList.setBounds(490, 120, 50, 20);
+         add(DateList);
+
+         
+         JLabel Label5 = new JLabel("학년");
+         JLabel Label6 = new JLabel("반");
+         
+         JComboBox<String> GradeList = new JComboBox<String>(Grade);
+         GradeList.setBounds(380, 150, 60, 20);
+         add(GradeList);
+         JComboBox<String> ClassList = new JComboBox<String>(Class);
+         ClassList.setBounds(470, 150, 60, 20);
+         add(ClassList);
+         
+         JRadioButton Student = new JRadioButton("학생");
+         JRadioButton Teacher = new JRadioButton("교사");
+         
+         JLabel Label7 = new JLabel("취미");
+         JTextField Hobby = new JTextField(10);
+         JLabel Label8 = new JLabel("특기");
+         JTextField Speciality = new JTextField(10);
+         
+         JLabel Label9 = new JLabel("집전화");
+         JTextField HN = new JTextField(20);
+         JLabel Label10 = new JLabel("휴대폰");
+         JTextField PN = new JTextField(20);
+         
+         JButton Finish = new JButton("가입완료");
+         
+         Finish.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               try {
+                  BufferedWriter file = new BufferedWriter(new FileWriter("D:/회원명단.txt",true));
+                  file.write(name.getText()+"/");
+                  file.write(id.getText()+"/");
+                  String PW = new String(pw.getPassword());
+                  file.write(PW+"/");
+                  file.write(YearList.getSelectedItem().toString());
+                  file.write(MonthList.getSelectedItem().toString());
+                  file.write(DateList.getSelectedItem().toString()+"/");
+                  file.write(GradeList.getSelectedItem().toString()+"/");
+                  file.write(ClassList.getSelectedItem().toString()+"/");               
+                  if(Student.isSelected()) {
+                     file.write(Student.getText()+"/");
+                  }else {
+                     file.write(Teacher.getText()+"/");
+                  }
+                     
+                  file.write(Hobby.getText()+"/");
+                  file.write(Speciality.getText()+"/");
+                  file.write(HN.getText()+"/");
+                  file.write(PN.getText()+"\r\n");
+                  file.close();
+
+                  JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
+                  pane.setSelectedIndex(0);
+                  
+               }catch(Exception ex) {
+                  JOptionPane.showMessageDialog(null, "회원가입이 실패하였습니다.");
+               }
+            }
+         });
+
+         JButton Cancel = new JButton("취소");
+         
+         Label1.setBounds(310, 10, 50, 30);
+         name.setBounds(350, 15, 200, 20);
+         Label2.setBounds(300, 40, 80, 30);
+         id.setBounds(350, 45, 200, 20);
+         Label3.setBounds(290, 70, 130, 30);
+         pw.setBounds(350, 75, 200, 20);
+         Label4.setBounds(260, 115, 130, 30);
+         Label5.setBounds(340, 150, 80, 20);
+         Label6.setBounds(450, 150, 80, 20);
+         Student.setBounds(370, 180, 80, 30);
+         Teacher.setBounds(460, 180, 80, 30);
+         Label7.setBounds(310, 220, 80, 30);
+         Hobby.setBounds(350, 227, 170, 20);
+         Label8.setBounds(310, 255, 80, 30);
+         Speciality.setBounds(350, 262, 170, 20);
+         Label9.setBounds(250, 320, 80, 20);
+         HN.setBounds(300, 320, 300, 20);
+         Label10.setBounds(250, 370, 80, 20);
+         PN.setBounds(300, 370, 300, 20);
+         Finish.setBounds(300, 430, 100, 20);
+         Cancel.setBounds(450, 430, 80, 20);
+         
+         
+         add(Label1);
+         add(name);
+         add(Label2);
+         add(id);
+         add(Label3);
+         add(pw);
+         add(Label4);
+         add(Label5);
+         add(Label6);
+         add(Student);
+         add(Teacher);
+         add(Label7);
+         add(Hobby);
+         add(Label8);
+         add(Speciality);
+         add(Label9);
+         add(HN);
+         add(Label10);
+         add(PN);
+         add(Finish);
+         add(Cancel);
+
+      }
+   public static void main(String[] args) {
+      new Project();
+
+   }
+   
+   }
+
