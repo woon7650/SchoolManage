@@ -1,0 +1,169 @@
+package Project1;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+public class Project extends JFrame{
+   JTabbedPane pane;
+   
+   public Project() {
+      setTitle("학사관리");
+      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      Container c1 = getContentPane();
+      pane = createTabbedPane();
+      c1.add(pane, BorderLayout.CENTER);
+      setSize(800,600);
+      setVisible(true);
+   }
+   
+   public JTabbedPane createTabbedPane() {
+      JTabbedPane pane = new JTabbedPane();
+      pane.addTab("메인",new MyPanel());
+      pane.addTab("회원등록", new MyPanel2());
+
+      
+      
+      return pane;
+   }
+   
+
+
+   class MyPanel extends JPanel{
+      public MyPanel() {
+            
+        setLayout(null);
+        
+         ImageIcon img = new ImageIcon("D:/학사.png");
+         JLabel imageLabel = new JLabel(img);
+            
+         JLabel textLabel1 = new JLabel("아이디");
+         JTextField text1 = new JTextField(10);
+         JLabel textLabel2 = new JLabel("패스워드");
+         JPasswordField text2 = new JPasswordField(10);
+         JButton btn1 = new JButton("Login");
+         JButton btn2 = new JButton("회원가입");
+         JLabel Hello = new JLabel("환영합니다");
+         
+         imageLabel.setBounds(150,50,500,300);
+         textLabel1.setBounds(170,310,200,200);
+         text1.setBounds(220,400,150,20);
+         textLabel2.setBounds(415,310,200,200);
+         text2.setBounds(475,400,150,20);
+         btn1.setBounds(280,450,100,30);
+         btn2.setBounds(415,450,100,30);
+         Hello.setBounds(365,370, 100,30);
+
+         add(imageLabel);
+         add(textLabel1);
+         add(text1);
+         add(textLabel2);
+         add(text2);
+         add(btn1);
+         add(btn2);
+         add(Hello);
+         Hello.setVisible(false);
+         
+         
+         class MyActionListener implements ActionListener{
+            public void actionPerformed(ActionEvent e) {
+               String pw = new String(text2.getPassword());
+               JButton b = (JButton)e.getSource();
+               
+               if(b.getText().equals("Login")) {
+                  if(text1.getText().equals("admin") && pw.equals("1234")) {
+                     //관리자(선생님)으로 로그인 한 경우
+                      JOptionPane.showMessageDialog(null, "로그인 성공");
+                      textLabel1.setVisible(false);
+                      text1.setVisible(false);
+                      textLabel2.setVisible(false);
+                      text2.setVisible(false);
+                      btn1.setText("Logout");
+                      btn2.setEnabled(false);
+                      Hello.setVisible(true);
+                      //pane에 성적입력탭과 학생성적보기 탭 만들어서 넣어야 함!
+                      //pane.addTab("학생정보", new MyPanel3()); 이건 빼구
+                      pane.setEnabledAt(1, false);
+                      pane.addTab("성적입력",new MyPanel4());
+                      pane.addTab("학생성적보기",new MyPanel5());
+                      pane.setSelectedIndex(2);
+                      
+                   }
+                  else {
+                     try {
+                          String txt;
+                          String[] array;
+                          int check = 0;
+                          BufferedReader file = new BufferedReader(new FileReader("D:/회원명단.txt"));
+                          while((txt = file.readLine()) != null) {
+                             array = txt.split("/");
+                             if(text1.getText().equals(array[1]) && pw.equals(array[2])) {
+                             //회원명단에 있는 경우
+                                JOptionPane.showMessageDialog(null, "로그인 성공");
+                                textLabel1.setVisible(false);
+                                  text1.setVisible(false);
+                                  textLabel2.setVisible(false);
+                                  text2.setVisible(false);
+                                  btn1.setText("Logout");
+                                  btn2.setEnabled(false);
+                                  Hello.setVisible(true);
+                                  pane.addTab("학생정보", new MyPanel3());
+                                  pane.setEnabledAt(1, false);
+                                  check = 1;
+                                  break;
+                             }
+                          }
+                          if(check == 0)   
+                              JOptionPane.showMessageDialog(null, "다시 입력하세요");
+                          file.close();
+                       }catch(IOException E) {
+                          E.printStackTrace();
+                       }         
+                  }
+               }else if(b.getText().equals("Logout")){
+                  JOptionPane.showMessageDialog(null, "로그아웃합니다");  
+                  System.exit(0);
+                  
+               }else {//회원가입
+                  pane.setSelectedIndex(1);     
+                  
+               }
+          
+            }             
+             
+          }
+         btn1.addActionListener(new MyActionListener());
+         btn2.addActionListener(new MyActionListener());
+         }
+
+        
+      }
+
+public static void main(String[] args) {
+      new Project();
+
+   }
